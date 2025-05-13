@@ -31,7 +31,7 @@ const ChameleonInvoice: React.FC = () => {
             </Button>
             <Button variant='secondary'>
               <Mail className="mr-1 size-5" />
-              Email
+              Send
             </Button>
             <Button variant='default'>
               <Infinity className="mr-1 size-5" />
@@ -56,6 +56,102 @@ const Chat = () => {
   const [background, setBackground] = useState<string>(
     '--copilot-kit-background-color'
   )
+
+  useCopilotAction({
+    name: 'change_company_address',
+    description:
+      'Change the company address information for the invoice',
+    parameters: [
+      {
+        name: 'streetAddress',
+        type: 'string',
+        description: 'Company street address'
+      }, {
+        name: 'city',
+        type: 'string',
+        description: 'Company city'
+      }, {
+        name: 'state',
+        type: 'string',
+        description: 'Company state'
+      }, {
+        name: 'zip',
+        type: 'string',
+        description: 'Company zip code'
+      },
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changeCompanyInfo', ctx })
+    }
+  })
+
+  useCopilotAction({
+    name: 'change_company_name',
+    description:
+      'Change the company name for the invoice',
+    parameters: [
+      {
+        name: 'name',
+        type: 'string',
+        description: 'Company name'
+      }
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changeCompanyInfo', ctx })
+    }
+  })
+
+  useCopilotAction({
+    name: 'change_bill_to',
+    description:
+      'Change the bill to customer address information for the invoice',
+    parameters: [
+      {
+        name: 'streetAddress',
+        type: 'string',
+        description: 'Customer street address'
+      }, {
+        name: 'city',
+        type: 'string',
+        description: 'Customer city'
+      }, {
+        name: 'state',
+        type: 'string',
+        description: 'Customer state'
+      }, {
+        name: 'zip',
+        type: 'string',
+        description: 'Customer zip code'
+      },
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changeBillToInfo', ctx })
+    }
+  })
+
+  useCopilotAction({
+    name: 'change_bill_to_name',
+    description:
+      'Change the bill to information for customer business name a nd customer name for the invoice',
+    parameters: [
+      {
+        name: 'businessName',
+        type: 'string',
+        optional: true,
+        description: 'Business name'
+      },
+      {
+        name: 'customerName',
+        type: 'string',
+        optional: false,
+        description: 'Customer name'
+      }
+    ],
+
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changeBillToInfo', ctx })
+    }
+  })
 
   useCopilotAction({
     name: 'change_background',

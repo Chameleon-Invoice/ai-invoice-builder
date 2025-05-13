@@ -4,23 +4,23 @@ export const store = {
   hasStarted: true,
   fromCompany: {
     name: 'Company or name',
-    address: '123 Main St',
+    streetAddress: '123 Main St',
     city: 'City',
     state: 'State',
-    zip: '123456',
+    zip: 'Zip code',
     phone: '+1 (555) 555-5555',
     email: 'hello@company.com',
     website: 'www.company.com'
   },
   billTo: {
-    businessName: 'Business Name',
-    customerName: 'Customer Name',
+    businessName: 'Business name',
+    customerName: 'Customer name',
     address: 'Address',
     city: 'City',
     state: 'State',
-    zip: 'Zip Code',
-    phone: 'Phone Number',
-    email: 'Email Address'
+    zip: 'Zip code',
+    phone: 'Phone number',
+    email: 'Email address'
   },
   invoiceNumber: '001',
   invoiceDate: new Date().toLocaleDateString(),
@@ -69,6 +69,30 @@ export const invoiceStore = createStore({
       return {
         ...context,
         hasStarted: false
+      }
+    },
+    changeCompanyInfo: (context, event: { ctx: any }) => {
+      return {
+        ...context,
+        fromCompany: {
+          ...context.fromCompany,
+          ...event.ctx
+        }
+      }
+    },
+    changeBillToInfo: (context, event: { ctx: any }) => {
+      return {
+        ...context,
+        billTo: {
+          ...context.billTo,
+          ...event.ctx
+        }
+      }
+    },
+    changeInvoiceNumber: (context, event: { ctx: any }) => {
+      return {
+        ...context,
+        invoiceNumber: event.ctx.invoiceNumber
       }
     }
   }

@@ -14,7 +14,7 @@ export function InvoicePreview() {
           <h1 className="text-2xl font-bold text-blue-600">INVOICE #{context.invoiceNumber}</h1>
           <div className="text-lg font-semibold mt-1">{context.fromCompany.name}</div>
           <div className="text-sm text-gray-600 mt-1">
-            {context.fromCompany.address}
+            {context.fromCompany.streetAddress}
             <br />
             {context.fromCompany.city}, {context.fromCompany.state} {context.fromCompany.zip}
           </div>
