@@ -1,3 +1,5 @@
+'use client'
+
 export function InvoicePreview() {
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
