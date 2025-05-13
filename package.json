@@ -23,6 +23,7 @@
     "@xstate/store": "^3.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
     "framer-motion": "12.11.0",
     "lucide-react": "^0.510.0",
     "mastra": "0.6.2",
