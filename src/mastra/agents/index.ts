@@ -4,7 +4,6 @@ import { MCPClient } from '@mastra/mcp'
 import dotenv from 'dotenv'
 
 dotenv.config()
-console.log(process.env)
 
 // Prepare the Smithery API key and Exa API key config for CLI
 const smitheryApiKey = process.env.SMITHERY_API_KEY || ''
