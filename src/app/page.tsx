@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Download, Mail, Share2 } from 'lucide-react'
+import { Download, Mail, Infinity } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
 import { CopilotKit, useCopilotAction } from '@copilotkit/react-core'
@@ -27,16 +27,16 @@ const ChameleonInvoice: React.FC = () => {
           <div className='col-span-4'>
             <div className='flex flex-col gap-4 mx-auto w-8/10 items-stretch'>
             <Button variant='outline'>
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="mr-1 size-5" />
               Download
             </Button>
             <Button variant='secondary'>
-              <Mail className="mr-2 h-4 w-4" />
+              <Mail className="mr-1 size-5" />
               Email
             </Button>
             <Button variant='default'>
-              <Share2 className="mr-2 h-4 w-4" />
-              Share
+              <Infinity className="mr-1 size-5" />
+              Random
             </Button>
             </div>
             <CopilotKit

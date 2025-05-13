@@ -4,3 +4,4 @@ node_modules
 .mastra
 .vscode/settings.json
 .mastra
+mastra.db
