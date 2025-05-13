@@ -13,11 +13,10 @@ import { invoiceStore } from '@/store/invoice-store'
 import { Button } from '@/components/ui/button'
 
 const ChameleonInvoice: React.FC = () => {
-  const { hasStarted } = useSelector(invoiceStore, (state) => state.context)
-
+  const context = useSelector(invoiceStore, (state) => state.context)
   return (
     <>
-      {hasStarted ? (
+      {context.hasStarted ? (
         <InvoiceIntro />
       ) : (
         <div className='grid grid-cols-12 w-full'>
@@ -54,7 +53,6 @@ const ChameleonInvoice: React.FC = () => {
 }
 
 const Chat = () => {
-  const context = useSelector(invoiceStore, (state) => state.context)
   const [background, setBackground] = useState<string>(
     '--copilot-kit-background-color'
   )

@@ -1,26 +1,31 @@
 'use client'
 
+import { invoiceStore } from "@/store/invoice-store"
+import { useSelector } from "@xstate/store/react"
+
 export function InvoicePreview() {
+  const context = useSelector(invoiceStore, (state) => state.context)
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-start mb-8">
+      <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-2xl font-bold text-blue-600">INVOICE</h1>
-          <div className="text-lg font-semibold mt-1">BICYCLE COLLECTIVE</div>
+          <h1 className="text-2xl font-bold text-blue-600">INVOICE #{context.invoiceNumber}</h1>
+          <div className="text-lg font-semibold mt-1">{context.fromCompany.name}</div>
           <div className="text-sm text-gray-600 mt-1">
-            325 West 900 South
+            {context.fromCompany.address}
             <br />
-            Salt Lake City, UT 84101
+            {context.fromCompany.city}, {context.fromCompany.state} {context.fromCompany.zip}
           </div>
         </div>
         <div className="text-right">
           <div className="text-sm text-gray-600">
-            slc@bicyclecollective.org
+            {context.fromCompany.email}
             <br />
-            +1 (801) 328-2453
+            {context.fromCompany.phone}
             <br />
-            www.bicyclecollective.org
+            {context.fromCompany.website}
           </div>
           <div className="mt-4 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
             <span className="text-gray-400 text-xs">Logo</span>
@@ -29,19 +34,18 @@ export function InvoicePreview() {
       </div>
 
       {/* Bill To */}
-      <div className="bg-blue-50 p-4 rounded-md mb-8">
-        <div className="text-sm text-gray-600 mb-1">Bill to</div>
-        <div className="font-semibold">Kirkwood Donavin</div>
+      <div className="p-4 flex flex-col gap-1 rounded-md">
+        <div className="text-sm text-gray-600 mb-1">Bill to:</div>
+        <h2 className="font-semibold">{context.billTo.businessName}</h2>
+        <h2>{context.billTo.customerName}</h2>
       </div>
 
       {/* Invoice Details */}
       <div className="bg-blue-50 p-4 rounded-md mb-8">
         <div className="font-semibold mb-2">Invoice details</div>
         <div className="grid grid-cols-2 gap-2 text-sm">
-          <div>Invoice no.: 3580</div>
-          <div>Invoice date: 03/05/2025</div>
-          <div>Terms: Due on receipt</div>
-          <div>Due date: 03/05/2025</div>
+          <div>Invoice Date: {context.invoiceDate}</div>
+          <div>Due Date: {context.dueDate}</div>
         </div>
       </div>
 
@@ -54,43 +58,21 @@ export function InvoicePreview() {
               <th className="py-2 text-left">Product or service</th>
               <th className="py-2 text-left">Description</th>
               <th className="py-2 text-right">Qty</th>
-              <th className="py-2 text-right">Rate</th>
               <th className="py-2 text-right">Amount</th>
+              <th className="py-2 text-right">Total</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b">
-              <td className="py-3">1.</td>
-              <td>Keylist Distributor Order</td>
-              <td>BE0001 Timber MTB Model Yew! MTB Bell - Bolt-On, Black</td>
-              <td className="text-right">1</td>
-              <td className="text-right">$21.18</td>
-              <td className="text-right">$21.18</td>
-            </tr>
-            <tr className="border-b">
-              <td className="py-3">2.</td>
-              <td>Keylist Distributor Order</td>
-              <td>TL5346 Park Tool MWR-10 Metric Wrench Ratcheting 10mm</td>
-              <td className="text-right">1</td>
-              <td className="text-right">$7.68</td>
-              <td className="text-right">$7.68</td>
-            </tr>
-            <tr className="border-b">
-              <td className="py-3">3.</td>
-              <td>Keylist Distributor Order</td>
-              <td>TL5344 Park Tool MWR-8 Metric Wrench Ratcheting 8mm</td>
-              <td className="text-right">1</td>
-              <td className="text-right">$7.06</td>
-              <td className="text-right">$7.06</td>
-            </tr>
-            <tr className="border-b">
-              <td className="py-3">4.</td>
-              <td>Keylist Distributor Order</td>
-              <td>ST0610 MSW Seatpost Clamp - 29.8mm, Bolt-On, Black</td>
-              <td className="text-right">1</td>
-              <td className="text-right">$4.40</td>
-              <td className="text-right">$4.40</td>
-            </tr>
+            {context.items.map((item, index) => (
+              <tr key={index} className="border-b">
+                <td className="py-3">{index + 1}.</td>
+                <td>{item.service}</td>
+                <td>{item.description}</td>
+                <td className="text-right">{item.qty}</td>
+                <td className="text-right">${item.rate.toFixed(2)}</td>
+                <td className="text-right">${item.amount.toFixed(2)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -101,32 +83,35 @@ export function InvoicePreview() {
           <div className="mb-4">
             <div className="font-semibold mb-2">Ways to pay</div>
             <div className="flex space-x-2">
-              <div className="w-10 h-6 bg-gray-200 rounded flex items-center justify-center text-xs">CC</div>
-              <div className="w-10 h-6 bg-gray-200 rounded flex items-center justify-center text-xs">Visa</div>
-              <div className="w-10 h-6 bg-gray-200 rounded flex items-center justify-center text-xs">MC</div>
-              <div className="w-10 h-6 bg-gray-200 rounded flex items-center justify-center text-xs">Amex</div>
+              {context.supportedPayments.map((payment, index) => (
+                <div key={index} className="h-6 px-3 bg-gray-200 rounded flex items-center justify-center text-xs">
+                  {payment}
+                </div>
+              ))}
             </div>
           </div>
           <div>
             <div className="font-semibold mb-2">Note to customer</div>
-            <div className="text-sm text-gray-600">Please see attached file for line item description.</div>
+            <div className="text-sm text-gray-600">{context.note}</div>
           </div>
         </div>
         <div className="w-1/3">
           <div className="space-y-2">
             <div className="flex justify-between">
+              <span>Tax</span>
+              <span className="font-semibold">${context.tax.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
               <span>Total</span>
-              <span className="font-semibold">$40.32</span>
+              <span className="font-semibold">${context.total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Payment</span>
-              <span className="font-semibold">-$40.32</span>
+              <span className="font-semibold">${context.paidAmount.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between pt-2 border-t">
-              <span>Balance due</span>
-              <span className="font-semibold">$0.00</span>
-            </div>
-            <div className="text-right text-green-600 font-semibold">Paid in Full</div>
+            {context.paidInFull && (
+              <div className="text-right text-green-600 font-semibold">Paid in Full</div>
+            )}
           </div>
         </div>
       </div>

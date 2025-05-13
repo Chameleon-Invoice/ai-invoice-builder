@@ -3,17 +3,18 @@ import { createStore } from '@xstate/store'
 export const store = {
   hasStarted: true,
   fromCompany: {
-    name: 'Company Name',
+    name: 'Company or name',
     address: '123 Main St',
     city: 'City',
     state: 'State',
     zip: '123456',
     phone: '+1 (555) 555-5555',
-    email: 'hero@company.com',
+    email: 'hello@company.com',
     website: 'www.company.com'
   },
   billTo: {
-    name: 'Customer Name',
+    businessName: 'Business Name',
+    customerName: 'Customer Name',
     address: 'Address',
     city: 'City',
     state: 'State',
@@ -21,18 +22,18 @@ export const store = {
     phone: 'Phone Number',
     email: 'Email Address'
   },
-  invoiceNumber: 1,
+  invoiceNumber: '001',
   invoiceDate: new Date().toLocaleDateString(),
   dueDate: new Date(
     new Date().setDate(new Date().getDate() + 30)
   ).toLocaleDateString(),
-  terms: 'Net 30',
+  terms: 30,
   currency: 'USD',
   items: [
     {
       id: 1,
-      service: 'Service Name',
-      description: 'Service Description',
+      service: 'Name',
+      description: 'Description',
       qty: 1,
       rate: 0.0,
       amount: 0.0
@@ -42,11 +43,9 @@ export const store = {
   tax: 0.0,
   paidAmount: 0.0,
   dueAmount: 0.0,
-  note: '',
-  paid: false,
-  supportedPayments: ['Cash', 'Credit Card', 'Bank Transfer'],
-  lineItems: [],
-  name: 'David'
+  paidInFull: false,
+  supportedPayments: ['Cash', 'Credit card', 'Bank Transfer'],
+  note: 'Add a visible customer note here'
 }
 
 type InvoiceStore = typeof store

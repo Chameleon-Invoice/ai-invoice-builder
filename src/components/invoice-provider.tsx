@@ -10,7 +10,7 @@ const initializeStore = () => {
   try {
     const localStorageData = localStorage.getItem('invoiceStore')
     if (localStorageData) {
-      invoiceStore.send({ type: 'init', context: JSON.parse(localStorageData) })
+      invoiceStore.send({ type: 'init', context: JSON.parse(localStorageData)})
     }
   } catch (error) {
     console.error('Failed to initialize from localStorage:', error)
