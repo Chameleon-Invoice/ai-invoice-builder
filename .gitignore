@@ -5,3 +5,4 @@ node_modules
 .vscode/settings.json
 .mastra
 mastra.db
+.DS_Store
