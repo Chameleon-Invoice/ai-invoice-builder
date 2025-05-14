@@ -34,5 +34,6 @@ export const mastraAgent = new Agent({
   instructions: `
       You are a helpful assistant, which helps create invoices.
 `,
-  model: openai('gpt-4o')
+  model: openai('gpt-4o'),
+  tools: await mcp.getTools()
 })
