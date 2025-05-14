@@ -3,7 +3,7 @@ import { createStore } from '@xstate/store'
 export const store = {
   hasStarted: true,
   fromCompany: {
-    name: 'Company or name',
+    name: 'Company name',
     streetAddress: '123 Main St',
     city: 'City',
     state: 'State',
@@ -22,25 +22,31 @@ export const store = {
     phone: 'Phone number',
     email: 'Email address'
   },
-  invoiceNumber: '001',
-  invoiceDate: new Date().toLocaleDateString(),
+  number: '001',
+  date: new Date().toLocaleDateString(),
   dueDate: new Date(
     new Date().setDate(new Date().getDate() + 30)
   ).toLocaleDateString(),
-  terms: 30,
+  availableTerms: [
+    { id: 1, name: 'Net 30', value: 30 },
+    { id: 2, name: 'Net 60', value: 60 },
+    { id: 3, name: 'Net 90', value: 90 }
+  ],
+  termId: 1,
   currency: 'USD',
   items: [
     {
       id: 1,
-      service: 'Name',
+      name: 'Name',
       description: 'Description',
       qty: 1,
-      rate: 0.0,
-      amount: 0.0
+      amount: 0.0,
+      total: 0.0
     }
   ],
   total: 0.0,
-  tax: 0.0,
+  taxAmount: 0.0,
+  taxRate: 0.1, // 10%
   paidAmount: 0.0,
   dueAmount: 0.0,
   paidInFull: false,
@@ -92,7 +98,140 @@ export const invoiceStore = createStore({
     changeInvoiceNumber: (context, event: { ctx: any }) => {
       return {
         ...context,
-        invoiceNumber: event.ctx.invoiceNumber
+        number: event.ctx.number
+      }
+    },
+    changeDates: (
+      context,
+      event: { ctx: { date: string; dueDate: string } }
+    ) => {
+      return {
+        ...context,
+        ...(event.ctx.date && { date: event.ctx.date }),
+        ...(event.ctx.dueDate && { dueDate: event.ctx.dueDate })
+      }
+    },
+    updatePaidStatus: (context, event: { ctx: { paidInFull: boolean } }) => {
+      return {
+        ...context,
+        paidInFull: event.ctx.paidInFull
+      }
+    },
+    updateTerms: (context, event: { ctx: { terms: number } }) => {
+      return {
+        ...context,
+        terms: event.ctx.terms
+      }
+    },
+    updateNote: (context, event: { ctx: { note: string } }) => {
+      return {
+        ...context,
+        note: event.ctx.note
+      }
+    },
+    appendItem: (
+      context,
+      event: {
+        ctx: {
+          name: string
+          description: string
+          qty: number
+          amount: number
+        }
+      }
+    ) => {
+      const newItem = {
+        id: context.items.length + 1,
+        name: event.ctx.name,
+        description: event.ctx.description,
+        qty: event.ctx.qty,
+        amount: event.ctx.amount,
+        total: event.ctx.qty * event.ctx.amount
+      }
+      const updatedItems = [...context.items, newItem]
+      const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
+      const tax = itemsTotal * context.taxRate
+      const totalWithTax = itemsTotal + tax
+      return {
+        ...context,
+        items: updatedItems,
+        total: totalWithTax,
+        taxAmount: tax,
+        dueAmount: totalWithTax - context.paidAmount
+      }
+    },
+    removeItem: (context, event: { id: number }) => {
+      const updatedItems = context.items.filter((item) => item.id !== event.id)
+      const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
+      const tax = itemsTotal * context.taxRate
+      const itemsTotalWithTax = itemsTotal + tax
+      return {
+        ...context,
+        items: updatedItems,
+        total: itemsTotalWithTax,
+        taxAmount: tax,
+        dueAmount: itemsTotalWithTax - context.paidAmount
+      }
+    },
+    updateItem: (
+      context,
+      event: {
+        ctx: {
+          id: number
+          name?: string
+          description?: string
+          qty?: number
+          amount?: number
+        }
+      }
+    ) => {
+      const updatedItems = context.items.map((item) => {
+        if (item.id === event.ctx.id) {
+          const updatedItem = {
+            ...item,
+            ...event.ctx,
+            total:
+              (event.ctx.qty ?? item.qty) * (event.ctx.amount ?? item.amount)
+          }
+          return updatedItem
+        }
+        return item
+      })
+      const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
+      const tax = itemsTotal * context.taxRate
+      const itemsTotalWithTax = itemsTotal + tax
+      return {
+        ...context,
+        items: updatedItems,
+        total: itemsTotalWithTax,
+        taxAmount: tax,
+        dueAmount: itemsTotalWithTax - context.paidAmount
+      }
+    },
+    updatePaidAmount: (context, event: { ctx: { paidAmount: number } }) => {
+      const newPaidAmount = event.ctx.paidAmount
+      const newDueAmount = context.total - newPaidAmount
+
+      return {
+        ...context,
+        paidAmount: newPaidAmount,
+        dueAmount: newDueAmount,
+        paidInFull: newDueAmount <= 0
+      }
+    },
+    updateTaxRate: (context, event: { ctx: { rate: number } }) => {
+      const itemsTotal = context.items.reduce(
+        (sum, item) => sum + item.total,
+        0
+      )
+      const newTax = itemsTotal * event.ctx.rate
+      const totalWithTax = itemsTotal + newTax
+      return {
+        ...context,
+        taxRate: event.ctx.rate,
+        taxAmount: newTax,
+        total: totalWithTax,
+        dueAmount: itemsTotal - context.paidAmount
       }
     }
   }

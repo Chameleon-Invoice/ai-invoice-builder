@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Download, Mail, Infinity } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
-import { CopilotKit, useCopilotAction } from '@copilotkit/react-core'
-import { CopilotChat } from '@copilotkit/react-ui'
+import { CopilotKit } from '@copilotkit/react-core'
 import { InvoicePreview } from '@/components/invoice-preview'
 import { InvoiceIntro } from '@/components/invoice-intro'
+import { InvoiceChat } from '@/components/invoice-chat'
 import { useSelector } from '@xstate/store/react'
 import { invoiceStore } from '@/store/invoice-store'
 import { Button } from '@/components/ui/button'
@@ -25,162 +25,30 @@ const ChameleonInvoice: React.FC = () => {
           </div>
           <div className='col-span-4'>
             <div className='flex flex-col gap-4 mx-auto w-8/10 items-stretch'>
-            <Button variant='outline'>
-              <Download className="mr-1 size-5" />
-              Download
-            </Button>
-            <Button variant='secondary'>
-              <Mail className="mr-1 size-5" />
-              Send
-            </Button>
-            <Button variant='default'>
-              <Infinity className="mr-1 size-5" />
-              Random
-            </Button>
+              <Button variant='outline'>
+                <Download className="mr-1 size-5" />
+                Download
+              </Button>
+              <Button variant='secondary'>
+                <Mail className="mr-1 size-5" />
+                Send
+              </Button>
+              <Button variant='default'>
+                <Infinity className="mr-1 size-5" />
+                Random
+              </Button>
             </div>
             <CopilotKit
               runtimeUrl='/api/copilotkit'
               showDevConsole={true}
               agent='mastraAgent'
             >
-              <Chat />
+              <InvoiceChat />
             </CopilotKit>
           </div>
         </div>
       )}
     </>
-  )
-}
-
-const Chat = () => {
-  const [background, setBackground] = useState<string>(
-    '--copilot-kit-background-color'
-  )
-
-  useCopilotAction({
-    name: 'change_company_address',
-    description:
-      'Change the company address information for the invoice',
-    parameters: [
-      {
-        name: 'streetAddress',
-        type: 'string',
-        description: 'Company street address'
-      }, {
-        name: 'city',
-        type: 'string',
-        description: 'Company city'
-      }, {
-        name: 'state',
-        type: 'string',
-        description: 'Company state'
-      }, {
-        name: 'zip',
-        type: 'string',
-        description: 'Company zip code'
-      },
-    ],
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeCompanyInfo', ctx })
-    }
-  })
-
-  useCopilotAction({
-    name: 'change_company_name',
-    description:
-      'Change the company name for the invoice',
-    parameters: [
-      {
-        name: 'name',
-        type: 'string',
-        description: 'Company name'
-      }
-    ],
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeCompanyInfo', ctx })
-    }
-  })
-
-  useCopilotAction({
-    name: 'change_bill_to',
-    description:
-      'Change the bill to customer address information for the invoice',
-    parameters: [
-      {
-        name: 'streetAddress',
-        type: 'string',
-        description: 'Customer street address'
-      }, {
-        name: 'city',
-        type: 'string',
-        description: 'Customer city'
-      }, {
-        name: 'state',
-        type: 'string',
-        description: 'Customer state'
-      }, {
-        name: 'zip',
-        type: 'string',
-        description: 'Customer zip code'
-      },
-    ],
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeBillToInfo', ctx })
-    }
-  })
-
-  useCopilotAction({
-    name: 'change_bill_to_name',
-    description:
-      'Change the bill to information for customer business name a nd customer name for the invoice',
-    parameters: [
-      {
-        name: 'businessName',
-        type: 'string',
-        optional: true,
-        description: 'Business name'
-      },
-      {
-        name: 'customerName',
-        type: 'string',
-        optional: false,
-        description: 'Customer name'
-      }
-    ],
-
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeBillToInfo', ctx })
-    }
-  })
-
-  useCopilotAction({
-    name: 'change_background',
-    description:
-      'Change the background color of the chat. Can be anything that the CSS background attribute accepts. Regular colors, linear of radial gradients etc.',
-    parameters: [
-      {
-        name: 'background',
-        type: 'string',
-        description: 'The background. Prefer gradients.'
-      }
-    ],
-    handler: ({ background }) => {
-      setBackground(background)
-    }
-  })
-
-  return (
-    <div
-      className='flex justify-center items-center h-[750px] w-full'
-      style={{ background }}
-    >
-      <div className='w-8/10 h-8/10 rounded-lg '>
-        <CopilotChat
-          className='h-full w-full rounded-2xl py-6'
-          labels={{ initial: 'Hello, how can I help you today?' }}
-        />
-      </div>
-    </div>
   )
 }
 
