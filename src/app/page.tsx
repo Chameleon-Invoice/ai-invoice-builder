@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Download, Mail, Infinity } from 'lucide-react'
+import { Mail, Undo, Undo2 } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
 import { CopilotKit } from '@copilotkit/react-core'
@@ -24,20 +24,6 @@ const ChameleonInvoice: React.FC = () => {
             <InvoicePreview />
           </div>
           <div className='col-span-4'>
-            <div className='flex flex-col gap-4 mx-auto w-8/10 items-stretch'>
-              <Button variant='outline'>
-                <Download className="mr-1 size-5" />
-                Download
-              </Button>
-              <Button variant='secondary'>
-                <Mail className="mr-1 size-5" />
-                Send
-              </Button>
-              <Button variant='default'>
-                <Infinity className="mr-1 size-5" />
-                Random
-              </Button>
-            </div>
             <CopilotKit
               runtimeUrl='/api/copilotkit'
               showDevConsole={true}
@@ -45,6 +31,18 @@ const ChameleonInvoice: React.FC = () => {
             >
               <InvoiceChat />
             </CopilotKit>
+            <div className='flex flex-col gap-4 mx-auto w-8/10 items-stretch'>
+              <Button variant='default'>
+                <Mail className="mr-1 size-5" />
+                Send
+              </Button>
+              <Button
+                onClick={() => invoiceStore.send({ type: 'reset' })}
+                variant='link' className='text-red-600'>
+                <Undo2 className="mr-1 size-5" />
+                Reset
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { InvoiceLogoUpload } from './invoice-logo-upload'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore } from '@/store/invoice-store'
@@ -329,6 +330,16 @@ export const InvoiceChat = () => {
     }
   })
 
+  useCopilotAction({
+    name: 'upload_logo',
+    description: 'Upload a company logo for the invoice through a drag and drop interface or file selection',
+    renderAndWaitForResponse: ({ respond  }) => {
+      return <InvoiceLogoUpload onUpload={() => {
+        respond && respond('complete')
+      }} />
+    }
+  })
+
   return (
     <div
       className='flex justify-center items-center h-[750px] w-full'
@@ -338,6 +349,21 @@ export const InvoiceChat = () => {
         <CopilotChat
           className='h-full w-full rounded-2xl py-6'
           labels={{ initial: 'Hello, how can I help you today?' }}
+          // onReloadMessages={() => {
+          //   console.log('Reloading messages...')
+          // }}
+          // onStopGeneration={() => {
+          //   console.log('Stopping generation...')
+          // }}
+          // onRegenerate={() => {
+          //   console.log('Regenerating...')
+          // }}
+          // onInProgress={() => {
+          //   console.log('In progress...')
+          // }}
+          // onSubmitMessage={(message => {
+          //   console.log('Message submitted:', message)
+          // })}
         />
       </div>
     </div>

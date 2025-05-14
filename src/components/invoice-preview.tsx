@@ -3,42 +3,49 @@
 import { invoiceStore } from "@/store/invoice-store"
 import { useSelector } from "@xstate/store/react"
 import { InvoiceTotalSummary } from "./invoice-total-summary"
+import Image from "next/image"
+import { Badge } from "./ui/badge"
 
 export function InvoicePreview() {
   const invoice = useSelector(invoiceStore, (state) => state.context)
 
   return (
-    <div className="bg-white p-8 min-h-[90svh] rounded-lg shadow-lg max-w-4xl mx-auto">
+    <div className="bg-background dark:bg-background p-8 min-h-[90svh] rounded-lg shadow-lg max-w-4xl mx-auto">
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-2xl font-bold text-blue-600">INVOICE #{invoice.number}</h1>
-          <div className="text-lg font-semibold mt-1">{invoice.fromCompany.name}</div>
-          <div className="text-sm text-gray-600 mt-1">
+          <h1 className="text-lg font-bold text-primary">INVOICE #{invoice.number}</h1>
+          <div className="text-xl font-semibold mt-1">{invoice.fromCompany.name}</div>
+          <div className="text-sm text-muted-foreground mt-1">
             {invoice.fromCompany.streetAddress}
             <br />
             {invoice.fromCompany.city}, {invoice.fromCompany.state} {invoice.fromCompany.zip}
           </div>
         </div>
         <div className="text-right">
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-muted-foreground">
             {invoice.fromCompany.email}
             <br />
             {invoice.fromCompany.phone}
             <br />
             {invoice.fromCompany.website}
           </div>
-          <div className="mt-4 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
-            <span className="text-gray-400 text-xs">Logo</span>
+          <div className="mt-4 w-32 h-32 flex items-center justify-center">
+            <Image
+              height={150}
+              width={150}
+              src={invoice.fromCompany.logo.url}
+              alt={invoice.fromCompany.logo.alt ?? 'Company Logo'}
+              className="w-full h-full rounded-md object-contain"
+            />
           </div>
         </div>
       </div>
 
       {/* Bill To */}
       <div className="p-4 flex flex-col gap-1 rounded-md">
-        <div className="text-sm text-gray-600 mb-1">Bill to:</div>
-        <h2 className="font-semibold">{invoice.billTo.businessName}</h2>
-        <h2>{invoice.billTo.customerName}</h2>
+        <div className="text-sm text-muted-foreground mb-1">Bill to:</div>
+        <h2 className="font-semibold">{invoice.billTo.customerName}</h2>
       </div>
 
       {/* Invoice Details */}
@@ -85,15 +92,18 @@ export function InvoicePreview() {
             <div className="font-semibold mb-2">Ways to pay</div>
             <div className="flex space-x-2">
               {invoice.supportedPayments.map((payment, index) => (
-                <div key={index} className="h-6 px-3 bg-gray-200 rounded flex items-center justify-center text-xs">
+                <Badge
+                  key={index}
+                  className="h-6 px-3 flex items-center justify-center text-xs"
+                  >
                   {payment}
-                </div>
+                </Badge>
               ))}
             </div>
           </div>
           <div>
             <div className="font-semibold mb-2">Note to customer</div>
-            <div className="text-sm text-gray-600">{invoice.note}</div>
+            <div className="text-sm text-muted-foreground">{invoice.note}</div>
           </div>
         </div>
         <div className="w-1/3">

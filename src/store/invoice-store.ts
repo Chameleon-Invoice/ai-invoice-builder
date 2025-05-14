@@ -7,13 +7,16 @@ export const store = {
     streetAddress: '123 Main St',
     city: 'City',
     state: 'State',
-    zip: 'Zip code',
+    zip: 'Zip Code',
     phone: '+1 (555) 555-5555',
     email: 'hello@company.com',
-    website: 'www.company.com'
+    website: 'www.company.com',
+    logo: {
+      url: 'https://placehold.co/150x150?text=logo',
+      alt: 'Company Logo'
+    }
   },
   billTo: {
-    businessName: 'Business name',
     customerName: 'Customer name',
     address: 'Address',
     city: 'City',
@@ -51,7 +54,11 @@ export const store = {
   dueAmount: 0.0,
   paidInFull: false,
   supportedPayments: ['Cash', 'Credit card', 'Bank Transfer'],
-  note: 'Add a visible customer note here'
+  note: 'Add a visible customer note here',
+  customization: {
+    theme: 'default',
+    primaryColor: '#000000'
+  }
 }
 
 type InvoiceStore = typeof store
@@ -233,6 +240,22 @@ export const invoiceStore = createStore({
         total: totalWithTax,
         dueAmount: itemsTotal - context.paidAmount
       }
+    },
+    uploadLogo: (context, event: { ctx: { url: string; alt: string } }) => {
+      return {
+        ...context,
+        fromCompany: {
+          ...context.fromCompany,
+          logo: {
+            url: event.ctx.url,
+            alt: event.ctx.alt || context.fromCompany.logo.alt
+          }
+        }
+      }
+    },
+    reset: () => {
+      // Return the default store state
+      return store
     }
   }
 })

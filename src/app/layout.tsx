@@ -1,8 +1,11 @@
-import type { Metadata } from 'next'
+'use client'
+
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import InvoiceProvider from '@/components/invoice-provider'
+import { useSelector } from '@xstate/store/react'
+import { invoiceStore } from '@/store/invoice-store'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -14,32 +17,29 @@ const geistMono = Geist_Mono({
   subsets: ['latin']
 })
 
-export const metadata: Metadata = {
-  title: 'Chameleon Invoice',
-  description: 'Invoicing for the people who hate quickbooks invoicing'
-}
-
 export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const invoice = useSelector(invoiceStore, (state) => state.context)
+
   return (
     <html lang='en' suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className='flex flex-col items-center h-full justify-center bg-gray-100'>
-          <InvoiceProvider>
-            <ThemeProvider
-              defaultTheme='default'
-              forcedTheme='default'
-              themes={['default', 'nike', 'chick-fil-a']}
-            >
+        <InvoiceProvider>
+          <ThemeProvider
+            defaultTheme='default'
+            forcedTheme='default'
+            themes={['default', 'light', 'dark']}
+          >
+            <main className='bg-gray-100 h-full flex flex-col justify-center [data-theme=dark]:bg-gray-900 items-center'>
               {children}
-            </ThemeProvider>
-          </InvoiceProvider>
-        </main>
+            </main>
+          </ThemeProvider>
+        </InvoiceProvider>
       </body>
     </html>
   )
