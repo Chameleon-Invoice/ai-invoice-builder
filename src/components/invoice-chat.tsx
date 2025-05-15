@@ -6,7 +6,6 @@ import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
 import InvoiceCustomerSelection from './invoice-customer-selection'
-import { CustomMessages } from './copilotkit/custom-messages'
 
 export const InvoiceChat = () => {
 
@@ -91,21 +90,11 @@ export const InvoiceChat = () => {
     name: 'change_customer',
     description:
       'Add or change the customer for the invoice',
-    parameters: [
-      // {
-      //   name: 'customerName',
-      //   type: 'string',
-      //   optional: true,
-      //   description: 'Customer name'
-      // }
-    ],
+    parameters: [],
 
-    render: ({ args, status }) => {
+    render: () => {
       return <InvoiceCustomerSelection />
     },
-    // handler: (ctx) => {
-    //   invoiceStore.send({ type: 'changeBillToInfo', ctx })
-    // }
   })
 
   useCopilotAction({
@@ -228,19 +217,16 @@ export const InvoiceChat = () => {
         name: 'description',
         type: 'string',
         description: 'Description of the item. It is optional',
-        required: false,
       },
       {
         name: 'qty',
         type: 'number',
         description: 'Quantity of the item. It is optional and should default to 1',
-        required: false
       },
       {
         name: 'amount',
         type: 'number',
         description: 'Price, Cost, Rate, or Amount for the item. It is optional and should default to 0.0',
-        required: false
       }
     ],
     handler: (ctx) => {
