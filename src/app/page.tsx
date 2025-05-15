@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Mail, Undo, Undo2 } from 'lucide-react'
+import { Mail, Undo2 } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
 import { CopilotKit } from '@copilotkit/react-core'
@@ -26,8 +26,8 @@ const ChameleonInvoice: React.FC = () => {
           <div className='col-span-4'>
             <CopilotKit
               runtimeUrl='/api/copilotkit'
-              showDevConsole={true}
               agent='mastraAgent'
+
             >
               <InvoiceChat />
             </CopilotKit>
