@@ -286,6 +286,12 @@ export const invoiceStore = createStore({
         hasStarted: false
       }
     },
+    changePurchaseOrder: (context, event: { ctx: { poNumber: string } }) => {
+      return {
+        ...context,
+        poNumber: event.ctx.poNumber
+      }
+    },
     changeBackground: (
       context,
       event: { ctx: { backgroundColor: string } }
