@@ -6,7 +6,6 @@ dotenv.config()
 // Prepare the Smithery API key and Exa API key config for CLI
 const smitheryApiKey = process.env.SMITHERY_API_KEY || ''
 const exaApiKey = process.env.EXA_API_KEY || ''
-const exaConfig = `"{\\\"exaApiKey\\\":\\\"${exaApiKey}\\\"}"`
 const resendProfile = process.env.RESEND_PROFILE || ''
 const senderEmail = process.env.RESEND_SENDER_EMAIL_ADDRESS || ''
 const replyToEmail = process.env.RESEND_REPLY_TO_EMAIL_ADDRESS || ''
