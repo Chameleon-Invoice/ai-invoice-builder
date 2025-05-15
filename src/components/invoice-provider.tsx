@@ -3,10 +3,27 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useSelector } from '@xstate/store/react'
 import { invoiceStore, store } from '@/store/invoice-store'
+// import { MastraClient } from '@mastra/client-js'
 
 const InvoiceContext = createContext(store)
 
-const initializeStore = () => {
+const initializeStore = async () => {
+      // const mastra = new MastraClient({
+      //   baseUrl: process.env.MASTRA_BASE_URl ?? 'http://localhost:4111',
+      // })
+
+      // const workflowInstance = mastra.getVNextWorkflow('companyUrlWorkflow')
+      // const run = await workflowInstance.createRun()
+
+      // const result = await workflowInstance.startAsync({
+      //   runId: run.runId,
+      //   inputData: {
+      //     companyUrl: 'https://www.mastra.ai',
+      //   }
+      // })
+
+      // console.log('Workflow result:', result)
+
   try {
     const localStorageData = localStorage.getItem('invoiceStore')
     if (localStorageData) {

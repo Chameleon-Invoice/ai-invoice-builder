@@ -18,12 +18,13 @@ export const store = {
   },
   billTo: {
     customerName: 'Customer name',
-    address: 'Address',
-    city: 'City',
-    state: 'State',
-    zip: 'Zip code',
-    phone: 'Phone number',
-    email: 'Email address'
+    businessName: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
+    email: ''
   },
   number: '001',
   date: new Date().toLocaleDateString(),
@@ -37,16 +38,14 @@ export const store = {
   ],
   termId: 1,
   currency: 'USD',
-  items: [
-    {
-      id: 1,
-      name: 'Name',
-      description: 'Description',
-      qty: 1,
-      amount: 0.0,
-      total: 0.0
-    }
-  ],
+  items: [] as Array<{
+    id: number
+    name: string
+    description: string
+    qty: number
+    amount: number
+    total: number
+  }>,
   total: 0.0,
   taxAmount: 0.0,
   taxRate: 0.1, // 10%
@@ -56,6 +55,7 @@ export const store = {
   supportedPayments: ['Cash', 'Credit card', 'Bank Transfer'],
   note: 'Add a visible customer note here',
   customization: {
+    isCustomizating: false,
     theme: 'default',
     primaryColor: 'oklch(0.72 0.19 149.58)',
     backgroundColor: 'oklch(0.967 0.003 264.542)'
@@ -168,6 +168,21 @@ export const invoiceStore = createStore({
         dueAmount: totalWithTax - context.paidAmount
       }
     },
+    removeItemByName: (context, event: { name: string }) => {
+      const updatedItems = context.items.filter(
+        (item) => item.name.toLowerCase() !== event.name.toLowerCase()
+      )
+      const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
+      const tax = itemsTotal * context.taxRate
+      const itemsTotalWithTax = itemsTotal + tax
+      return {
+        ...context,
+        items: updatedItems,
+        total: itemsTotalWithTax,
+        taxAmount: tax,
+        dueAmount: itemsTotalWithTax - context.paidAmount
+      }
+    },
     removeItem: (context, event: { id: number }) => {
       const updatedItems = context.items.filter((item) => item.id !== event.id)
       const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
@@ -205,6 +220,7 @@ export const invoiceStore = createStore({
         }
         return item
       })
+
       const itemsTotal = updatedItems.reduce((sum, item) => sum + item.total, 0)
       const tax = itemsTotal * context.taxRate
       const itemsTotalWithTax = itemsTotal + tax

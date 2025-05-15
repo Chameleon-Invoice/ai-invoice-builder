@@ -4,7 +4,9 @@ import React from 'react'
 import { InvoiceLogoUpload } from './invoice-logo-upload'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
-import { invoiceStore } from '@/store/invoice-store'
+import { invoiceStore, store } from '@/store/invoice-store'
+import InvoiceCustomerSelection from './invoice-customer-selection'
+import { CustomMessages } from './copilotkit/custom-messages'
 
 export const InvoiceChat = () => {
 
@@ -44,7 +46,8 @@ export const InvoiceChat = () => {
       {
         name: 'name',
         type: 'string',
-        description: 'Company name'
+        description: 'Company name',
+        required: true
       }
     ],
     handler: (ctx) => {
@@ -60,19 +63,23 @@ export const InvoiceChat = () => {
       {
         name: 'streetAddress',
         type: 'string',
-        description: 'Customer street address'
+        description: 'Customer street address',
+        required: false
       }, {
         name: 'city',
         type: 'string',
-        description: 'Customer city'
+        description: 'Customer city',
+        required: false
       }, {
         name: 'state',
         type: 'string',
-        description: 'Customer state'
+        description: 'Customer state',
+        required: false
       }, {
         name: 'zip',
         type: 'string',
-        description: 'Customer zip code'
+        description: 'Customer zip code',
+        required: false
       },
     ],
     handler: (ctx) => {
@@ -81,26 +88,24 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
-    name: 'change_bill_to_name',
+    name: 'change_customer',
     description:
-      'Change the bill to information for customer business name and customer name for the invoice',
+      'Add or change the customer for the invoice',
     parameters: [
-      {
-        name: 'businessName',
-        type: 'string',
-        optional: true,
-        description: 'Business name'
-      },
-      {
-        name: 'customerName',
-        type: 'string',
-        optional: true,
-        description: 'Customer name'
-      }
+      // {
+      //   name: 'customerName',
+      //   type: 'string',
+      //   optional: true,
+      //   description: 'Customer name'
+      // }
     ],
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeBillToInfo', ctx })
-    }
+
+    render: ({ args, status }) => {
+      return <InvoiceCustomerSelection />
+    },
+    // handler: (ctx) => {
+    //   invoiceStore.send({ type: 'changeBillToInfo', ctx })
+    // }
   })
 
   useCopilotAction({
@@ -211,30 +216,31 @@ export const InvoiceChat = () => {
 
   useCopilotAction({
     name: 'add_invoice_item',
-    description: 'Add a new item or line item to the invoice with name, description, quantity and amount',
+    description: 'Add a new item or line item to the invoice. The description, quantity, and amount are optional.',
     parameters: [
       {
         name: 'name',
         type: 'string',
-        description: 'Name, Product name, or service name of the item',
+        description: 'Name, product name, item name, or service name of the item',
         required: true
       },
       {
         name: 'description',
         type: 'string',
-        description: 'Description of the item',
+        description: 'Description of the item. It is optional',
+        required: false,
       },
       {
         name: 'qty',
         type: 'number',
-        description: 'Quantity or number of the item',
-        required: true
+        description: 'Quantity of the item. It is optional and should default to 1',
+        required: false
       },
       {
         name: 'amount',
         type: 'number',
-        description: 'Price, Cost, Rate, or Amount for the item',
-        required: true
+        description: 'Price, Cost, Rate, or Amount for the item. It is optional and should default to 0.0',
+        required: false
       }
     ],
     handler: (ctx) => {
@@ -345,10 +351,38 @@ export const InvoiceChat = () => {
   useCopilotAction({
     name: 'upload_logo',
     description: 'Upload a company logo for the invoice through a drag and drop interface or file selection',
-    renderAndWaitForResponse: ({ respond  }) => {
-      return <InvoiceLogoUpload onUpload={() => {
-        respond && respond('complete')
-      }} />
+    render: () => {
+      return <InvoiceLogoUpload />
+    }
+    // renderAndWaitForResponse: ({ respond  }) => {
+    //   return <InvoiceLogoUpload onUpload={() => {
+    //     respond && respond('complete')
+    //   }} />
+    // }
+  })
+
+  useCopilotAction({
+    name: 'remove_invoice_item_by_name',
+    description: 'Remove an item from the invoice by its name. This name is a fuzzy search and will remove the first item that matches the name.',
+    parameters: [
+      {
+        name: 'name',
+        type: 'string',
+        description: 'Name of the item to remove',
+        required: true
+      }
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'removeItemByName', name: ctx.name })
+    }
+  })
+
+  useCopilotAction({
+    name: 'remove_customer',
+    description: 'Remove the current customer and reset customer information to default values',
+    parameters: [],
+    handler: () => {
+      invoiceStore.send({ type: 'changeBillToInfo', ctx: store.billTo })
     }
   })
 
@@ -356,10 +390,11 @@ export const InvoiceChat = () => {
     <div
       className='flex justify-center items-center h-[750px] w-full bg-transparent'
     >
-      <div className='w-8/10 h-8/10 rounded-lg'>
+      <div className='w-8/10 h-9/10 rounded-lg'>
         <CopilotChat
           className='h-full w-full rounded-2xl py-6'
-          labels={{ initial: 'Hello, how can I help you today?' }}
+          labels={{ initial: 'How can I help you build and style your invoice?' }}
+
           // onReloadMessages={() => {
           //   console.log('Reloading messages...')
           // }}
