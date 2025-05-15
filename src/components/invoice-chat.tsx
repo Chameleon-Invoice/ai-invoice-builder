@@ -365,7 +365,7 @@ export const InvoiceChat = () => {
     name: 'remove_all_items',
     description: 'Remove all items / products / services from the invoice',
     parameters: [],
-    renderAndWaitForResponse: ({ args, respond }) => {
+    renderAndWaitForResponse: ({ respond }) => {
       return (
         <ConfirmationDialog
           isOpen={true}
