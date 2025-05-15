@@ -57,7 +57,8 @@ export const store = {
   note: 'Add a visible customer note here',
   customization: {
     theme: 'default',
-    primaryColor: '#000000'
+    primaryColor: 'oklch(0.72 0.19 149.58)',
+    backgroundColor: 'oklch(0.967 0.003 264.542)'
   }
 }
 
@@ -254,8 +255,22 @@ export const invoiceStore = createStore({
       }
     },
     reset: () => {
-      // Return the default store state
-      return store
+      return {
+        ...store,
+        hasStarted: false
+      }
+    },
+    changeBackground: (
+      context,
+      event: { ctx: { backgroundColor: string } }
+    ) => {
+      return {
+        ...context,
+        customization: {
+          ...context.customization,
+          backgroundColor: event.ctx.backgroundColor
+        }
+      }
     }
   }
 })

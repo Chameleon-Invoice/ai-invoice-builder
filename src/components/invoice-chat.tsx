@@ -7,9 +7,6 @@ import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore } from '@/store/invoice-store'
 
 export const InvoiceChat = () => {
-  const [background, setBackground] = useState<string>(
-    '--copilot-kit-background-color'
-  )
 
   useCopilotAction({
     name: 'change_company_address',
@@ -109,16 +106,19 @@ export const InvoiceChat = () => {
   useCopilotAction({
     name: 'change_background',
     description:
-      'Change the background color of the chat. Can be anything that the CSS background attribute accepts. Regular colors, linear of radial gradients etc.',
+      'Change the background color of the chat and invoice. Can be anything that the CSS background attribute accepts. Regular colors, linear or radial gradients etc.',
     parameters: [
       {
-        name: 'background',
+        name: 'backgroundColor',
         type: 'string',
-        description: 'The background. Prefer gradients.'
+        description: 'The background color or gradient.'
       }
     ],
-    handler: ({ background }) => {
-      setBackground(background)
+    handler: ({ backgroundColor }) => {
+      invoiceStore.send({
+        type: 'changeBackground',
+        ctx: { backgroundColor }
+      })
     }
   })
 
@@ -342,8 +342,7 @@ export const InvoiceChat = () => {
 
   return (
     <div
-      className='flex justify-center items-center h-[750px] w-full'
-      style={{ background }}
+      className='flex justify-center items-center h-[750px] w-full bg-transparent'
     >
       <div className='w-8/10 h-8/10 rounded-lg'>
         <CopilotChat
