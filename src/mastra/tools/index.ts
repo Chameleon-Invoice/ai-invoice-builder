@@ -14,26 +14,12 @@ const replyToEmail = process.env.RESEND_REPLY_TO_EMAIL_ADDRESS || ''
 // Configure the Smithery-hosted Exa MCP server
 export const mcp = new MCPClient({
   servers: {
-    // Local exa mcp server
-    // exa: {
-    //   command: 'npx',
-    //   args: ['exa-mcp-server', '--tools=web_search_exa,company_research'],
-    //   env: {
-    //     EXA_API_KEY: exaApiKey
-    //   }
-    // },
     exa: {
       command: 'npx',
-      args: [
-        '-y',
-        '@smithery/cli@latest',
-        'run',
-        'exa',
-        '--key',
-        smitheryApiKey,
-        '--config',
-        exaConfig
-      ]
+      args: ['exa-mcp-server', '--tools=web_search_exa,company_research'],
+      env: {
+        EXA_API_KEY: exaApiKey
+      }
     },
     'mcp-send-email': {
       command: 'npx',
