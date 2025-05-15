@@ -21,6 +21,12 @@ export function InvoicePreview() {
               <span className="text-sm text-muted-foreground">Date:</span>
               <span className="font-semibold text-sm ml-1">{invoice.date}</span>
             </p>
+            {invoice.poNumber && (
+              <p>
+                <span className="text-sm text-muted-foreground">PO:</span>
+                <span className="font-semibold text-sm ml-1">#{invoice.poNumber}</span>
+              </p>
+            )}
           </div>
           <div className="text-xl font-semibold mt-1">{invoice.fromCompany.name}</div>
           <div className="text-sm text-muted-foreground mt-1">

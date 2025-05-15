@@ -392,6 +392,34 @@ export const InvoiceChat = () => {
     }
   })
 
+  useCopilotAction({
+    name: 'change_purchase_order',
+    description: 'Add or update the purchase order (PO) number for the invoice',
+    parameters: [
+      {
+        name: 'poNumber',
+        type: 'string',
+        description: 'Purchase order (PO) number',
+        required: true
+      }
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changePurchaseOrder', ctx })
+    }
+  })
+
+  useCopilotAction({
+    name: 'remove_purchase_order',
+    description: 'Remove the purchase order (PO) number from the invoice',
+    parameters: [],
+    handler: () => {
+      invoiceStore.send({
+        type: 'changePurchaseOrder',
+        ctx: { poNumber: '' }
+      })
+    }
+  })
+
   return (
     <div
       className='flex justify-center items-center h-[750px] w-full bg-transparent'
