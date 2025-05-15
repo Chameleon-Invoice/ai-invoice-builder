@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { InvoiceLogoUpload } from './invoice-logo-upload'
+import CustomerContactCard from './customer-contact-card'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
@@ -88,13 +89,19 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
-    name: 'change_customer',
+    name: 'assign_customer',
     description:
-      'Add or change the customer for the invoice',
+      'Bill to / select / pick / set / assign an existing customer to the invoice',
     parameters: [],
 
-    render: () => {
-      return <InvoiceCustomerSelection />
+    renderAndWaitForResponse: ({respond}) => {
+      return <InvoiceCustomerSelection
+      onCancel={() => {
+        respond && respond("Okay, I've canceled that request")
+      }}
+      onSelection={() => {
+        respond && respond('The customer has been assigned to the invoice.')
+      }} />
     },
   })
 
@@ -409,6 +416,15 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
+    name: 'remove_logo',
+    description: 'Delete / remove the company logo from the invoice and reset it to the default placeholder',
+    parameters: [],
+    handler: () => {
+      invoiceStore.send({ type: 'removeLogo' })
+    }
+  })
+
+  useCopilotAction({
     name: 'remove_purchase_order',
     description: 'Remove the purchase order (PO) number from the invoice',
     parameters: [],
@@ -417,6 +433,108 @@ export const InvoiceChat = () => {
         type: 'changePurchaseOrder',
         ctx: { poNumber: '' }
       })
+    }
+  })
+
+  useCopilotAction({
+    name: 'add_customer',
+    description: 'Add a new customer to the invoice system',
+    parameters: [
+      {
+        name: 'customerName',
+        type: 'string',
+        description: 'Name of the customer',
+        required: true
+      },
+      {
+        name: 'businessName',
+        type: 'string',
+        description: 'Name of the business',
+        required: true
+      },
+      {
+        name: 'address',
+        type: 'string',
+        description: 'Street address of the business',
+        required: true
+      },
+      {
+        name: 'city',
+        type: 'string',
+        description: 'City of the business',
+        required: true
+      },
+      {
+        name: 'state',
+        type: 'string',
+        description: 'State of the business',
+        required: true
+      },
+      {
+        name: 'zip',
+        type: 'string',
+        description: 'ZIP code of the business',
+        required: true
+      },
+      {
+        name: 'phone',
+        type: 'string',
+        description: 'Phone number of the business',
+        required: true
+      },
+      {
+        name: 'email',
+        type: 'string',
+        description: 'Email address of the business',
+        required: true
+      }
+    ],
+    renderAndWaitForResponse: ({ respond, args }) => {
+      const {
+        customerName,
+        businessName,
+        address,
+        city,
+        state,
+        zip,
+        phone,
+        email
+      } = args as {
+        customerName: string
+        businessName: string
+        address: string
+        city: string
+        state: string
+        zip: string
+        phone: string
+        email: string
+      }
+      const newCustomer = {
+        customerName,
+        businessName,
+        address,
+        city,
+        state,
+        zip,
+        phone,
+        email
+      }
+
+      return (
+        <CustomerContactCard
+          customer={newCustomer}
+          onCancel={() => {
+            respond && respond("Okay, I've canceled creating that customer")
+          }}
+          onConfirm={() => {
+            invoiceStore.send({
+              type: 'addCustomer',
+              customer: newCustomer
+            })
+            respond && respond("I've created that customer for you")
+          }}
+        />
+      )
     }
   })
 

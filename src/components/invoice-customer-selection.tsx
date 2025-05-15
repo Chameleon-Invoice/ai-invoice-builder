@@ -12,70 +12,21 @@ import {
 } from '@/components/ui/command'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from './ui/button'
+import { Customer } from '@/store/invoice-store'
 
 // Dummy customer data
-const customers = [
-  {
-    customerName: 'John Smith',
-    businessName: 'Smith Enterprises',
-    address: '123 Business Ave',
-    city: 'New York',
-    state: 'NY',
-    zip: '10001',
-    phone: '(212) 555-1234',
-    email: 'john@smithenterprises.com'
-  },
-  {
-    customerName: 'Sarah Johnson',
-    businessName: 'Johnson Consulting',
-    address: '456 Tech Lane',
-    city: 'San Francisco',
-    state: 'CA',
-    zip: '94105',
-    phone: '(415) 555-5678',
-    email: 'sarah@johnsonconsulting.com'
-  },
-  {
-    customerName: 'Michael Chen',
-    businessName: 'Chen Solutions',
-    address: '789 Innovation Drive',
-    city: 'Seattle',
-    state: 'WA',
-    zip: '98101',
-    phone: '(206) 555-9012',
-    email: 'michael@chensolutions.com'
-  },
-  {
-    customerName: 'Emily Brown',
-    businessName: 'Brown Digital',
-    address: '321 Creative Street',
-    city: 'Austin',
-    state: 'TX',
-    zip: '78701',
-    phone: '(512) 555-3456',
-    email: 'emily@browndigital.com'
-  },
-  {
-    customerName: 'David Wilson',
-    businessName: 'Wilson Marketing',
-    address: '654 Market Road',
-    city: 'Chicago',
-    state: 'IL',
-    zip: '60601',
-    phone: '(312) 555-7890',
-    email: 'david@wilsonmarketing.com'
-  }
-]
+import { store } from '@/store/invoice-store'
 
 type InvoiceCustomerSelectionProps = {
 	onSelection?: () => void
+  onCancel?: () => void
 }
 
-export function InvoiceCustomerSelection({ onSelection }: InvoiceCustomerSelectionProps) {
+export function InvoiceCustomerSelection({ onSelection, onCancel }: InvoiceCustomerSelectionProps) {
   const [open, setOpen] = useState(true)
-  const [selectedCustomer, setSelectedCustomer] = useState<typeof customers[0] | null>(null)
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
 
-  const handleSelectCustomer = (customer: typeof customers[0]) => {
+  const handleSelectCustomer = (customer: Customer) => {
     setSelectedCustomer(customer)
     invoiceStore.send({
       type: 'changeBillToInfo',
@@ -86,7 +37,13 @@ export function InvoiceCustomerSelection({ onSelection }: InvoiceCustomerSelecti
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(status) => {
+      if (!status) {
+        setOpen(false)
+        onCancel && onCancel()
+      }
+
+    }}>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full justify-start">
           {selectedCustomer ? (
@@ -110,7 +67,7 @@ export function InvoiceCustomerSelection({ onSelection }: InvoiceCustomerSelecti
           <CommandInput placeholder="Search customers..." />
           <CommandEmpty>No customer found.</CommandEmpty>
           <CommandGroup>
-            {customers.map((customer) => (
+            {store.customers.map((customer) => (
               <CommandItem
                 key={customer.email}
                 onSelect={() => handleSelectCustomer(customer)}

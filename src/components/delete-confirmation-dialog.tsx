@@ -41,7 +41,12 @@ export function ConfirmationDialog({
 	}
 
   return (
-    <Dialog open={isDialogOpen}>
+    <Dialog onOpenChange={(status) => {
+      if (!status) {
+        setIsDialogOpen(false)
+        onCancel()
+      }
+    }} open={isDialogOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
