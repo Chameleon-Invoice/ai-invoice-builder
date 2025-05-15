@@ -6,6 +6,7 @@ import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
 import InvoiceCustomerSelection from './invoice-customer-selection'
+import { ConfirmationDialog } from './delete-confirmation-dialog'
 
 export const InvoiceChat = () => {
 
@@ -205,12 +206,12 @@ export const InvoiceChat = () => {
 
   useCopilotAction({
     name: 'add_invoice_item',
-    description: 'Add a new item or line item to the invoice. The description, quantity, and amount are optional.',
+    description: 'Add a new item / line item / part number / service / product to the invoice. The description, quantity, and amount are optional.',
     parameters: [
       {
         name: 'name',
         type: 'string',
-        description: 'Name, product name, item name, or service name of the item',
+        description: 'item name / product name / service name / part number of the item',
         required: true
       },
       {
@@ -337,14 +338,11 @@ export const InvoiceChat = () => {
   useCopilotAction({
     name: 'upload_logo',
     description: 'Upload a company logo for the invoice through a drag and drop interface or file selection',
-    render: () => {
-      return <InvoiceLogoUpload />
+    renderAndWaitForResponse: ({ respond  }) => {
+      return <InvoiceLogoUpload onUpload={() => {
+        respond && respond('The company logo has been uploaded successfully.')
+      }} />
     }
-    // renderAndWaitForResponse: ({ respond  }) => {
-    //   return <InvoiceLogoUpload onUpload={() => {
-    //     respond && respond('complete')
-    //   }} />
-    // }
   })
 
   useCopilotAction({
@@ -360,6 +358,28 @@ export const InvoiceChat = () => {
     ],
     handler: (ctx) => {
       invoiceStore.send({ type: 'removeItemByName', name: ctx.name })
+    }
+  })
+
+  useCopilotAction({
+    name: 'remove_all_items',
+    description: 'Remove all items / products / services from the invoice',
+    parameters: [],
+    renderAndWaitForResponse: ({ args, respond }) => {
+      return (
+        <ConfirmationDialog
+          isOpen={true}
+          title={`Remove All`}
+          description="Are you sure you want to remove all line items from this invoice?"
+          onConfirm={() => {
+            invoiceStore.send({ type: 'removeAllItems' })
+            respond && respond("Your product or services have been removed.")
+          }}
+          onCancel={() => {
+            respond && respond("Okay, I've canceled that request")
+          }}
+        />
+      )
     }
   })
 
