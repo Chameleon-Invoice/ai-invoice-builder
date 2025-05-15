@@ -8,6 +8,7 @@ import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
 import InvoiceCustomerSelection from './invoice-customer-selection'
 import { ConfirmationDialog } from './delete-confirmation-dialog'
+import { useSelector } from '@xstate/store/react'
 
 export const InvoiceChat = () => {
 
@@ -91,7 +92,7 @@ export const InvoiceChat = () => {
   useCopilotAction({
     name: 'assign_customer',
     description:
-      'Bill to / select / pick / set / assign an existing customer to the invoice',
+      'Add / bill to / select / pick / set / link / assign an existing customer to the invoice',
     parameters: [],
 
     renderAndWaitForResponse: ({respond}) => {
@@ -259,15 +260,16 @@ export const InvoiceChat = () => {
 
   useCopilotAction({
     name: 'update_invoice_item',
-    description: 'Update an existing invoice item by ID. All parameters except id are optional.',
+    description: 'Update an existing invoice item by name. The name must be unique and used to find the item to update.',
     parameters: [
       {
-        name: 'id',
-        type: 'number',
-        description: 'ID of the item to update'
+        name: 'name',
+        type: 'string',
+        description: 'Name of the item to update (this is used to find the item). It is case insensitive and fuzzy search',
+        required: true
       },
       {
-        name: 'name',
+        name: 'newName',
         type: 'string',
         description: 'New name for the item',
       },
@@ -288,7 +290,22 @@ export const InvoiceChat = () => {
       }
     ],
     handler: (ctx) => {
-      invoiceStore.send({ type: 'updateItem', ctx })
+      // Access current state through the store's context
+      const state = invoiceStore.getSnapshot().context
+      const item = state.items.find(i => i.name.toLowerCase() === ctx.name.toLowerCase())
+
+      if (item) {
+        invoiceStore.send({
+          type: 'updateItem',
+          ctx: {
+            id: item.id,
+            name: ctx.newName,
+            description: ctx.description,
+            qty: ctx.qty,
+            amount: ctx.amount
+          }
+        })
+      }
     }
   })
 
@@ -438,7 +455,7 @@ export const InvoiceChat = () => {
 
   useCopilotAction({
     name: 'add_customer',
-    description: 'Add a new customer to the invoice system',
+    description: 'Create a new customer to the invoice system',
     parameters: [
       {
         name: 'customerName',
