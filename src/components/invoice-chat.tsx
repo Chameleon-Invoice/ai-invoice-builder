@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { InvoiceLogoUpload } from './invoice-logo-upload'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
@@ -53,7 +53,7 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
-    name: 'change_bill_to',
+    name: 'change_bill_to_address',
     description:
       'Change the bill to customer address information for the invoice',
     parameters: [
@@ -94,7 +94,7 @@ export const InvoiceChat = () => {
       {
         name: 'customerName',
         type: 'string',
-        optional: false,
+        optional: true,
         description: 'Customer name'
       }
     ],
@@ -123,14 +123,30 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
-    name: 'change_dates',
-    description: 'Change the invoice date or due date. The invoice date should default to Date.now(). Each date can be updated separately or together without impacting the other date.',
+    name: 'change_date',
+    description: 'Change the invoice date. Defaults to current date if not specified.',
     parameters: [
       {
         name: 'date',
         type: 'string',
         description: 'Invoice date (MM/DD/YYYY)',
-      },
+      }
+    ],
+    handler: (ctx) => {
+      const formattedDate = new Date(ctx.date).toLocaleDateString()
+      invoiceStore.send({
+        type: 'changeDates',
+        ctx: {
+          date: formattedDate
+        }
+      })
+    }
+  })
+
+  useCopilotAction({
+    name: 'change_due_date',
+    description: 'Change the invoice due date.',
+    parameters: [
       {
         name: 'dueDate',
         type: 'string',
@@ -138,14 +154,10 @@ export const InvoiceChat = () => {
       }
     ],
     handler: (ctx) => {
-      // Convert string dates to Date objects and format them
-      const formattedDate = new Date(ctx.date).toLocaleDateString()
       const formattedDueDate = new Date(ctx.dueDate).toLocaleDateString()
-
       invoiceStore.send({
         type: 'changeDates',
         ctx: {
-          date: formattedDate,
           dueDate: formattedDueDate
         }
       })
