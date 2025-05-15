@@ -27,6 +27,7 @@ export const store = {
     email: ''
   },
   number: '001',
+  poNumber: '',
   date: new Date().toLocaleDateString(),
   dueDate: new Date(
     new Date().setDate(new Date().getDate() + 30)
@@ -166,6 +167,15 @@ export const invoiceStore = createStore({
         total: totalWithTax,
         taxAmount: tax,
         dueAmount: totalWithTax - context.paidAmount
+      }
+    },
+    removeAllItems: (context) => {
+      return {
+        ...context,
+        items: [],
+        total: 0,
+        taxAmount: 0,
+        dueAmount: 0
       }
     },
     removeItemByName: (context, event: { name: string }) => {
