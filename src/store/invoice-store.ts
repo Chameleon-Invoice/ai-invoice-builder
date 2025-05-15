@@ -111,7 +111,7 @@ export const invoiceStore = createStore({
     },
     changeDates: (
       context,
-      event: { ctx: { date: string; dueDate: string } }
+      event: { ctx: { date?: string; dueDate?: string } }
     ) => {
       return {
         ...context,

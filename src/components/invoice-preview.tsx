@@ -14,7 +14,13 @@ export function InvoicePreview() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-lg font-bold text-primary">INVOICE #{invoice.number}</h1>
+          <div className="mb-4">
+            <h1 className="text-lg font-bold text-primary">INVOICE #{invoice.number}</h1>
+            <p>
+              <span className="text-sm text-muted-foreground">Date:</span>
+              <span className="font-semibold text-sm ml-1">{invoice.date}</span>
+            </p>
+          </div>
           <div className="text-xl font-semibold mt-1">{invoice.fromCompany.name}</div>
           <div className="text-sm text-muted-foreground mt-1">
             {invoice.fromCompany.streetAddress}
@@ -43,17 +49,16 @@ export function InvoicePreview() {
       </div>
 
       {/* Bill To */}
-      <div className="p-4 flex flex-col gap-1 rounded-md">
-        <div className="text-sm text-muted-foreground mb-1">Bill to:</div>
-        <h2 className="font-semibold">{invoice.billTo.customerName}</h2>
-      </div>
-
-      {/* Invoice Details */}
-      <div className="bg-blue-50 p-4 rounded-md mb-8">
-        <div className="font-semibold mb-2">Invoice details</div>
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div>Invoice Date: {invoice.date}</div>
-          <div>Due Date: {invoice.dueDate}</div>
+      <div className="p-4 my-8 rounded-md border-2 border-primary">
+        <div className="flex justify-between">
+          <div>
+          <div className="text-sm text-muted-foreground mb-1">Bill to:</div>
+          <h2 className="font-semibold">{invoice.billTo.customerName}</h2>
+          </div>
+          <div>
+            <div className="text-sm text-muted-foreground mb-1 text-right">Due date:</div>
+            <div className="font-semibold text-right">{invoice.dueDate}</div>
+          </div>
         </div>
       </div>
 
