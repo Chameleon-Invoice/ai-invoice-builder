@@ -5,6 +5,7 @@ import { useSelector } from "@xstate/store/react"
 import { InvoiceTotalSummary } from "./invoice-total-summary"
 import Image from "next/image"
 import { Badge } from "./ui/badge"
+import { Building, Mail, Phone } from "lucide-react"
 
 export function InvoicePreview() {
   const invoice = useSelector(invoiceStore, (state) => state.context)
@@ -52,11 +53,23 @@ export function InvoicePreview() {
       <div className="p-4 my-8 rounded-md border-2 border-primary">
         <div className="flex justify-between">
           <div>
-          <div className="text-sm text-muted-foreground mb-1">Bill to:</div>
-          <h2 className="font-semibold">{invoice.billTo.customerName}</h2>
+            <div className="text-sm text-muted-foreground">Bill To</div>
+            <h2 className="font-semibold text-lg">{invoice.billTo.customerName}</h2>
+            <p className="text-muted-foreground flex gap-3">
+
+              {invoice.billTo.businessName && (
+                <span className="flex items-center gap-2 text-sm"><Building className="size-4" /> {invoice.billTo.businessName}</span>
+              )}
+              {invoice.billTo.email && (
+                <span className="flex items-center gap-2 text-sm"><Mail className="size-4" /> {invoice.billTo.email}</span>
+              )}
+              {invoice.billTo.phone && (
+                <span className="flex items-center gap-2 text-sm"><Phone className="size-4" />{invoice.billTo.phone}</span>
+              )}
+            </p>
           </div>
           <div>
-            <div className="text-sm text-muted-foreground mb-1 text-right">Due date:</div>
+            <div className="text-sm text-muted-foreground mb-1 text-right">Due Date</div>
             <div className="font-semibold text-right">{invoice.dueDate}</div>
           </div>
         </div>
@@ -67,7 +80,6 @@ export function InvoicePreview() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b">
-              <th className="py-2 text-left">#</th>
               <th className="py-2 text-left">Product or service</th>
               <th className="py-2 text-left">Description</th>
               <th className="py-2 text-right">Qty</th>
@@ -76,10 +88,18 @@ export function InvoicePreview() {
             </tr>
           </thead>
           <tbody>
+            {invoice.items.length === 0 && (
+              <tr className="border-b opacity-50">
+                <td className="py-3">Name</td>
+                <td>Description</td>
+                <td className="text-right">1</td>
+                <td className="text-right">$0.00</td>
+                <td className="text-right">$0.00</td>
+              </tr>
+            )}
             {invoice.items.map((item, index) => (
               <tr key={index} className="border-b">
-                <td className="py-3">{item.id}</td>
-                <td>{item.name}</td>
+                <td className="py-3">{item.name}</td>
                 <td>{item.description}</td>
                 <td className="text-right">{item.qty}</td>
                 <td className="text-right">${item.amount.toFixed(2)}</td>
