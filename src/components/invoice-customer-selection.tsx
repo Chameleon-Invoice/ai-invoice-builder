@@ -81,7 +81,7 @@ export function InvoiceCustomerSelection({ onSelection, onCancel }: InvoiceCusto
                 />
                 <div>
                   <div className="font-medium">{customer.customerName}</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground group-data-[selected=true]:text-white">
                     {customer.businessName}
                   </div>
                 </div>
