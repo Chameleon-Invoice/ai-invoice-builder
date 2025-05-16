@@ -3,7 +3,7 @@ import { ChameleonInvoice } from '@/components/chameleon-invoice'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Chamelon Invoice',
+  title: 'Chameleon Invoice',
   description: 'Invoicing made simple. Done before you notice.',
   icons: {
     icon: '/favicon.ico',
