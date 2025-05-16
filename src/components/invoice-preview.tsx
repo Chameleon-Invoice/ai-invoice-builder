@@ -7,6 +7,14 @@ import Image from "next/image"
 import { Badge } from "./ui/badge"
 import { Building, Mail, Phone } from "lucide-react"
 
+const currencySymbols: Record<string, string> = {
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  JPY: '¥',
+  MXN: '$'
+}
+
 export function InvoicePreview() {
   const invoice = useSelector(invoiceStore, (state) => state.context)
 
@@ -99,8 +107,8 @@ export function InvoicePreview() {
                 <td className="py-3">Name</td>
                 <td>Description</td>
                 <td className="text-right">1</td>
-                <td className="text-right">$0.00</td>
-                <td className="text-right">$0.00</td>
+                <td className="text-right">{currencySymbols[invoice.currency]}0.00</td>
+                <td className="text-right">{currencySymbols[invoice.currency]}0.00</td>
               </tr>
             )}
             {invoice.items.map((item, index) => (
@@ -108,8 +116,8 @@ export function InvoicePreview() {
                 <td className="py-3">{item.name}</td>
                 <td>{item.description}</td>
                 <td className="text-right">{item.qty}</td>
-                <td className="text-right">${item.amount.toFixed(2)}</td>
-                <td className="text-right">${item.total.toFixed(2)}</td>
+                <td className="text-right">{currencySymbols[invoice.currency]}{item.amount.toFixed(2)}</td>
+                <td className="text-right">{currencySymbols[invoice.currency]}{item.total.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

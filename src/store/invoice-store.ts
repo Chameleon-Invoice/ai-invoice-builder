@@ -391,6 +391,12 @@ export const invoiceStore = createStore({
           primaryColor: event.ctx.primaryColor
         }
       }
+    },
+    changeCurrency: (context, event: { ctx: { currency: string } }) => {
+      return {
+        ...context,
+        currency: event.ctx.currency
+      }
     }
   }
 })

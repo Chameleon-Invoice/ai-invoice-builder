@@ -500,6 +500,26 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
+    name: 'change_currency',
+    description: 'Change the invoice currency type (USD, EUR, GBP, JPY, MXN). This will update the currency symbol shown for amounts.',
+    parameters: [
+      {
+        name: 'currency',
+        type: 'string',
+        description: 'Currency code (USD, EUR, GBP, JPY, MXN). You can use their english equivalent names too.',
+        required: true,
+        enum: ['USD', 'EUR', 'GBP', 'JPY', 'MXN']
+      }
+    ],
+    handler: ({ currency }) => {
+      invoiceStore.send({
+        type: 'changeCurrency',
+        ctx: { currency }
+      })
+    }
+  })
+
+  useCopilotAction({
     name: 'add_customer',
     description: 'Create a new customer to the invoice system',
     parameters: [
