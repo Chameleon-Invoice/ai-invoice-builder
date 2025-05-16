@@ -57,6 +57,34 @@ export const InvoiceChat = () => {
   })
 
   useCopilotAction({
+    name: 'change_company_contact',
+    description: 'Change the company contact information (website, email, and phone number) for the invoice. The website, email, and phone number are optional and can be updated independently.',
+    parameters: [
+      {
+        name: 'website',
+        type: 'string',
+        description: 'Company website URL',
+        required: false
+      },
+      {
+        name: 'email',
+        type: 'string',
+        description: 'Company email address',
+        required: false
+      },
+      {
+        name: 'phone',
+        type: 'string',
+        description: 'Company phone number',
+        required: false
+      }
+    ],
+    handler: (ctx) => {
+      invoiceStore.send({ type: 'changeCompanyInfo', ctx })
+    }
+  })
+
+  useCopilotAction({
     name: 'change_bill_to_address',
     description:
       'Change the bill to customer address information for the invoice',
@@ -103,6 +131,25 @@ export const InvoiceChat = () => {
         respond && respond('The customer has been assigned to the invoice.')
       }} />
     },
+  })
+
+  useCopilotAction({
+    name: 'change_color',
+    description: 'Change the primary brand color of the chat and invoice interface. The color value should be in OKLCH format.',
+    parameters: [
+      {
+        name: 'primaryColor',
+        type: 'string',
+        description: 'The primary brand color in OKLCH format (e.g., oklch(0.72 0.19 149.58))',
+        required: true
+      }
+    ],
+    handler: ({ primaryColor }) => {
+      invoiceStore.send({
+        type: 'changeColor',
+        ctx: { primaryColor }
+      })
+    }
   })
 
   useCopilotAction({
