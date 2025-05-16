@@ -91,4 +91,11 @@ The power of AI is realized when you break out of a chat box and showcase how it
 5. **Open your browser:**
    Go to [http://localhost:3000](http://localhost:3000)
 
+## Contributors
+
+- Chris Moffett - Business owner, user testing
+- Kirkwood Donavan -  Data analyst, user testing
+- Kevin Traver - Back-end dev
+- Branden Silva - Front-end dev
+
 ---
