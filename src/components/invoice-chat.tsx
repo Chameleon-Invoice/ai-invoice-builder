@@ -83,55 +83,6 @@ export const InvoiceChat = () => {
     }
   })
 
-  // useCopilotAction({
-  //   name: 'change_bill_to_address',
-  //   description:
-  //     'Change the bill to customer address information for the invoice',
-  //   parameters: [
-  //     {
-  //       name: 'streetAddress',
-  //       type: 'string',
-  //       description: 'Customer street address',
-  //       required: false
-  //     }, {
-  //       name: 'city',
-  //       type: 'string',
-  //       description: 'Customer city',
-  //       required: false
-  //     }, {
-  //       name: 'state',
-  //       type: 'string',
-  //       description: 'Customer state',
-  //       required: false
-  //     }, {
-  //       name: 'zip',
-  //       type: 'string',
-  //       description: 'Customer zip code',
-  //       required: false
-  //     },
-  //   ],
-  //   handler: (ctx) => {
-  //     invoiceStore.send({ type: 'changeBillToInfo', ctx })
-  //   }
-  // })
-
-  // useCopilotAction({
-  //   name: 'assign_customer',
-  //   description:
-  //     'Add / bill to / select / pick / set / link / assign an existing customer to the invoice',
-  //   parameters: [],
-
-  //   renderAndWaitForResponse: ({respond}) => {
-  //     return <InvoiceCustomerSelection
-  //     onCancel={() => {
-  //       respond && respond("Okay, I've canceled that request")
-  //     }}
-  //     onSelection={() => {
-  //       respond && respond('The customer has been assigned to the invoice.')
-  //     }} />
-  //   },
-  // })
-
   useCopilotAction({
     name: 'change_color',
     description: 'Change the primary brand color of the chat and invoice interface. The color value should be in OKLCH format and use standard html colors.',
