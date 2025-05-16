@@ -1,5 +1,6 @@
 'use client'
 
+import { invoiceStore } from "@/store/invoice-store"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 
@@ -7,18 +8,14 @@ type CustomerContactCardProps = {
   customer: {
     customerName: string
     businessName: string
-    address: string
-    city: string
-    state: string
-    zip: string
     phone: string
     email: string
   }
   onCancel: () => void
-  onConfirm: () => void
+  onAssign: () => void
 }
 
-export function CustomerContactCard({ customer, onCancel, onConfirm }: CustomerContactCardProps) {
+export function CustomerContactCard({ customer, onCancel, onAssign }: CustomerContactCardProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -29,14 +26,6 @@ export function CustomerContactCard({ customer, onCancel, onConfirm }: CustomerC
           <div>
             <span className="font-semibold">Business: </span>
             {customer.businessName}
-          </div>
-          <div>
-            <span className="font-semibold">Address: </span>
-            {customer.address}
-          </div>
-          <div>
-            <span className="font-semibold">City/State/Zip: </span>
-            {customer.city}, {customer.state} {customer.zip}
           </div>
           <div>
             <span className="font-semibold">Phone: </span>
@@ -50,8 +39,11 @@ export function CustomerContactCard({ customer, onCancel, onConfirm }: CustomerC
             <Button variant="outline" onClick={onCancel}>
               Cancel
             </Button>
-            <Button onClick={onConfirm}>
-              Looks Good
+            <Button onClick={() => {
+              invoiceStore.send({ type: 'changeBillToInfo', ctx: { ...customer } })
+              onAssign()
+            }}>
+              Assign
             </Button>
           </div>
         </div>

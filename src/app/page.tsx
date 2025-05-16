@@ -11,7 +11,6 @@ import { InvoiceChat } from '@/components/invoice-chat'
 import { useSelector } from '@xstate/store/react'
 import { invoiceStore } from '@/store/invoice-store'
 import { Button } from '@/components/ui/button'
-import { CopilotPopup } from '@copilotkit/react-ui'
 
 const ChameleonInvoice: React.FC = () => {
   const context = useSelector(invoiceStore, (state) => state.context)

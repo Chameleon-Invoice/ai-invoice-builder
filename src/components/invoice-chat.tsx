@@ -6,7 +6,6 @@ import CustomerContactCard from './customer-contact-card'
 import { CopilotChat, CopilotPopup } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
-import InvoiceCustomerSelection from './invoice-customer-selection'
 import { ConfirmationDialog } from './delete-confirmation-dialog'
 
 export const InvoiceChat = () => {
@@ -84,54 +83,54 @@ export const InvoiceChat = () => {
     }
   })
 
-  useCopilotAction({
-    name: 'change_bill_to_address',
-    description:
-      'Change the bill to customer address information for the invoice',
-    parameters: [
-      {
-        name: 'streetAddress',
-        type: 'string',
-        description: 'Customer street address',
-        required: false
-      }, {
-        name: 'city',
-        type: 'string',
-        description: 'Customer city',
-        required: false
-      }, {
-        name: 'state',
-        type: 'string',
-        description: 'Customer state',
-        required: false
-      }, {
-        name: 'zip',
-        type: 'string',
-        description: 'Customer zip code',
-        required: false
-      },
-    ],
-    handler: (ctx) => {
-      invoiceStore.send({ type: 'changeBillToInfo', ctx })
-    }
-  })
+  // useCopilotAction({
+  //   name: 'change_bill_to_address',
+  //   description:
+  //     'Change the bill to customer address information for the invoice',
+  //   parameters: [
+  //     {
+  //       name: 'streetAddress',
+  //       type: 'string',
+  //       description: 'Customer street address',
+  //       required: false
+  //     }, {
+  //       name: 'city',
+  //       type: 'string',
+  //       description: 'Customer city',
+  //       required: false
+  //     }, {
+  //       name: 'state',
+  //       type: 'string',
+  //       description: 'Customer state',
+  //       required: false
+  //     }, {
+  //       name: 'zip',
+  //       type: 'string',
+  //       description: 'Customer zip code',
+  //       required: false
+  //     },
+  //   ],
+  //   handler: (ctx) => {
+  //     invoiceStore.send({ type: 'changeBillToInfo', ctx })
+  //   }
+  // })
 
-  useCopilotAction({
-    name: 'assign_customer',
-    description:
-      'Add / bill to / select / pick / set / link / assign an existing customer to the invoice',
-    parameters: [],
+  // useCopilotAction({
+  //   name: 'assign_customer',
+  //   description:
+  //     'Add / bill to / select / pick / set / link / assign an existing customer to the invoice',
+  //   parameters: [],
 
-    renderAndWaitForResponse: ({respond}) => {
-      return <InvoiceCustomerSelection
-      onCancel={() => {
-        respond && respond("Okay, I've canceled that request")
-      }}
-      onSelection={() => {
-        respond && respond('The customer has been assigned to the invoice.')
-      }} />
-    },
-  })
+  //   renderAndWaitForResponse: ({respond}) => {
+  //     return <InvoiceCustomerSelection
+  //     onCancel={() => {
+  //       respond && respond("Okay, I've canceled that request")
+  //     }}
+  //     onSelection={() => {
+  //       respond && respond('The customer has been assigned to the invoice.')
+  //     }} />
+  //   },
+  // })
 
   useCopilotAction({
     name: 'change_color',
@@ -536,30 +535,6 @@ export const InvoiceChat = () => {
         required: true
       },
       {
-        name: 'address',
-        type: 'string',
-        description: 'Street address of the business',
-        required: true
-      },
-      {
-        name: 'city',
-        type: 'string',
-        description: 'City of the business',
-        required: true
-      },
-      {
-        name: 'state',
-        type: 'string',
-        description: 'State of the business',
-        required: true
-      },
-      {
-        name: 'zip',
-        type: 'string',
-        description: 'ZIP code of the business',
-        required: true
-      },
-      {
         name: 'phone',
         type: 'string',
         description: 'Phone number of the business',
@@ -576,29 +551,17 @@ export const InvoiceChat = () => {
       const {
         customerName,
         businessName,
-        address,
-        city,
-        state,
-        zip,
         phone,
         email
       } = args as {
         customerName: string
         businessName: string
-        address: string
-        city: string
-        state: string
-        zip: string
         phone: string
         email: string
       }
       const newCustomer = {
         customerName,
         businessName,
-        address,
-        city,
-        state,
-        zip,
         phone,
         email
       }
@@ -609,7 +572,7 @@ export const InvoiceChat = () => {
           onCancel={() => {
             respond && respond("Okay, I've canceled creating that customer")
           }}
-          onConfirm={() => {
+          onAssign={() => {
             invoiceStore.send({
               type: 'addCustomer',
               customer: newCustomer

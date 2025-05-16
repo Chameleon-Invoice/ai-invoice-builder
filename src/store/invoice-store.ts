@@ -3,10 +3,6 @@ import { createStore } from '@xstate/store'
 export type Customer = {
   customerName: string
   businessName: string
-  address: string
-  city: string
-  state: string
-  zip: string
   phone: string
   email: string
 }
@@ -15,50 +11,30 @@ const customers: Customer[] = [
   {
     customerName: 'John Smith',
     businessName: 'Smith Enterprises',
-    address: '123 Business Ave',
-    city: 'New York',
-    state: 'NY',
-    zip: '10001',
     phone: '(212) 555-1234',
     email: 'john@smithenterprises.com'
   },
   {
     customerName: 'Sarah Johnson',
     businessName: 'Johnson Consulting',
-    address: '456 Tech Lane',
-    city: 'San Francisco',
-    state: 'CA',
-    zip: '94105',
     phone: '(415) 555-5678',
     email: 'sarah@johnsonconsulting.com'
   },
   {
     customerName: 'Michael Chen',
     businessName: 'Chen Solutions',
-    address: '789 Innovation Drive',
-    city: 'Seattle',
-    state: 'WA',
-    zip: '98101',
     phone: '(206) 555-9012',
     email: 'michael@chensolutions.com'
   },
   {
     customerName: 'Emily Brown',
     businessName: 'Brown Digital',
-    address: '321 Creative Street',
-    city: 'Austin',
-    state: 'TX',
-    zip: '78701',
     phone: '(512) 555-3456',
     email: 'emily@browndigital.com'
   },
   {
     customerName: 'David Wilson',
     businessName: 'Wilson Marketing',
-    address: '654 Market Road',
-    city: 'Chicago',
-    state: 'IL',
-    zip: '60601',
     phone: '(312) 555-7890',
     email: 'david@wilsonmarketing.com'
   }
@@ -84,10 +60,6 @@ export const store = {
   billTo: {
     customerName: 'Customer name',
     businessName: '',
-    address: '',
-    city: '',
-    state: '',
-    zip: '',
     phone: '',
     email: ''
   },
