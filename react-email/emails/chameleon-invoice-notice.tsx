@@ -34,13 +34,10 @@ const baseUrl = process.env.VERCEL_URL
 
 export const ChameleonNoticeEmail = ({
   username,
-  userImage,
   invitedByUsername,
   invitedByEmail,
   teamName,
-  teamImage,
   inviteLink,
-  inviteFromIp,
   inviteFromLocation,
 }: ChameleonNoticeEmailProps) => {
   const previewText = `Invoice from ${invitedByUsername}`;
@@ -57,7 +54,7 @@ export const ChameleonNoticeEmail = ({
                 src={`${baseUrl}/static/bicycle-collective-logo.png`}
                 width="150"
                 height="200"
-                alt="Company Logo"
+                alt="Bicycle Collective"
                 className="mx-auto my-0"
               />
             </Section>

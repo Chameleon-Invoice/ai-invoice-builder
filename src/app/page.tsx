@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import { Mail, Undo2 } from 'lucide-react'
+import { Undo2 } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
 import { CopilotKit } from '@copilotkit/react-core'
@@ -35,10 +35,6 @@ const ChameleonInvoice: React.FC = () => {
               <InvoiceChat />
             </CopilotKit>
             <div className='flex flex-col gap-4 mx-auto w-full md:w-8/10 items-stretch px-4 md:px-0'>
-              <Button variant='default'>
-                <Mail className="mr-1 size-5" />
-                Send
-              </Button>
               <Button
                 onClick={() => invoiceStore.send({ type: 'reset' })}
                 variant='link' className='text-red-600'>
