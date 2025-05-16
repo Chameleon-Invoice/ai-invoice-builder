@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Mail, Undo2 } from 'lucide-react'
 import '@copilotkit/react-ui/styles.css'
 import './globals.css'
@@ -14,6 +14,10 @@ import { Button } from '@/components/ui/button'
 
 const ChameleonInvoice: React.FC = () => {
   const context = useSelector(invoiceStore, (state) => state.context)
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--primary', context.customization.primaryColor)
+  }, [context.customization.primaryColor])
   return (
     <>
       {context.hasStarted ? (

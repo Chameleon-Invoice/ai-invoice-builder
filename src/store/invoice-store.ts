@@ -136,10 +136,6 @@ export const invoiceStore = createStore({
   // Transitions
   on: {
     init: (context, event: { context: InvoiceStore }) => {
-      console.log('init context', context)
-      console.log('init event', event.context)
-      // Initialize the context with the event context
-      // spread out the event conext to merge with the current context
       return {
         ...context,
         ...event.context

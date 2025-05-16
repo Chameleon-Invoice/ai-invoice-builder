@@ -135,12 +135,12 @@ export const InvoiceChat = () => {
 
   useCopilotAction({
     name: 'change_color',
-    description: 'Change the primary brand color of the chat and invoice interface. The color value should be in OKLCH format.',
+    description: 'Change the primary brand color of the chat and invoice interface. The color value should be in OKLCH format and use standard html colors.',
     parameters: [
       {
         name: 'primaryColor',
         type: 'string',
-        description: 'The primary brand color in OKLCH format (e.g., oklch(0.72 0.19 149.58))',
+        description: 'The primary brand color in html colors.',
         required: true
       }
     ],
