@@ -8,7 +8,6 @@ import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
 import InvoiceCustomerSelection from './invoice-customer-selection'
 import { ConfirmationDialog } from './delete-confirmation-dialog'
-import { useSelector } from '@xstate/store/react'
 
 export const InvoiceChat = () => {
 
@@ -563,22 +562,6 @@ export const InvoiceChat = () => {
         <CopilotChat
           className='h-full w-full rounded-2xl py-6'
           labels={{ initial: 'How can I help you build and style your invoice?' }}
-
-          // onReloadMessages={() => {
-          //   console.log('Reloading messages...')
-          // }}
-          // onStopGeneration={() => {
-          //   console.log('Stopping generation...')
-          // }}
-          // onRegenerate={() => {
-          //   console.log('Regenerating...')
-          // }}
-          // onInProgress={() => {
-          //   console.log('In progress...')
-          // }}
-          // onSubmitMessage={(message => {
-          //   console.log('Message submitted:', message)
-          // })}
         />
       </div>
     </div>

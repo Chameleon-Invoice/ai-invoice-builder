@@ -386,6 +386,15 @@ export const invoiceStore = createStore({
           backgroundColor: event.ctx.backgroundColor
         }
       }
+    },
+    changeColor: (context, event: { ctx: { primaryColor: string } }) => {
+      return {
+        ...context,
+        customization: {
+          ...context.customization,
+          primaryColor: event.ctx.primaryColor
+        }
+      }
     }
   }
 })
