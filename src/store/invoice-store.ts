@@ -123,7 +123,7 @@ export const store = {
   customization: {
     isCustomizating: false,
     theme: 'default',
-    primaryColor: 'oklch(0.72 0.19 149.58)',
+    primaryColor: 'oklch(0.77 0.15 163.22)',
     backgroundColor: 'oklch(0.967 0.003 264.542)'
   }
 }

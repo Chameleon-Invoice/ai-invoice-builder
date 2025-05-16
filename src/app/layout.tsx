@@ -35,7 +35,7 @@ export default function RootLayout({
             forcedTheme='default'
             themes={['default', 'light', 'dark']}
           >
-            <main className='bg-gray-100 h-full flex flex-col justify-center [data-theme=dark]:bg-gray-900 items-center' style={{
+            <main className='bg-gray-100 h-full flex flex-col md:justify-center [data-theme=dark]:bg-gray-900 items-center' style={{
               backgroundColor: invoice.customization.backgroundColor,
             }}>
               {children}

@@ -11,6 +11,7 @@ import { InvoiceChat } from '@/components/invoice-chat'
 import { useSelector } from '@xstate/store/react'
 import { invoiceStore } from '@/store/invoice-store'
 import { Button } from '@/components/ui/button'
+import { CopilotPopup } from '@copilotkit/react-ui'
 
 const ChameleonInvoice: React.FC = () => {
   const context = useSelector(invoiceStore, (state) => state.context)
@@ -23,19 +24,18 @@ const ChameleonInvoice: React.FC = () => {
       {context.hasStarted ? (
         <InvoiceIntro />
       ) : (
-        <div className='grid grid-cols-12 w-full'>
-          <div className='col-span-8'>
+        <div className='grid grid-cols-1 md:grid-cols-12 w-full gap-6 p-4 md:p-0'>
+          <div className='col-span-1 md:col-span-8'>
             <InvoicePreview />
           </div>
-          <div className='col-span-4'>
+          <div className='col-span-1 md:col-span-4'>
             <CopilotKit
               runtimeUrl='/api/copilotkit'
               agent='mastraAgent'
-
             >
               <InvoiceChat />
             </CopilotKit>
-            <div className='flex flex-col gap-4 mx-auto w-8/10 items-stretch'>
+            <div className='flex flex-col gap-4 mx-auto w-full md:w-8/10 items-stretch px-4 md:px-0'>
               <Button variant='default'>
                 <Mail className="mr-1 size-5" />
                 Send

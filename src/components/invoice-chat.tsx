@@ -3,7 +3,7 @@
 import React from 'react'
 import { InvoiceLogoUpload } from './invoice-logo-upload'
 import CustomerContactCard from './customer-contact-card'
-import { CopilotChat } from '@copilotkit/react-ui'
+import { CopilotChat, CopilotPopup } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { invoiceStore, store } from '@/store/invoice-store'
 import InvoiceCustomerSelection from './invoice-customer-selection'
@@ -626,8 +626,10 @@ export const InvoiceChat = () => {
       className='flex justify-center items-center h-[750px] w-full bg-transparent'
     >
       <div className='w-8/10 h-9/10 rounded-lg'>
+
+        <CopilotPopup className='md:hidden'/>
         <CopilotChat
-          className='h-full w-full rounded-2xl py-6'
+          className='h-full w-full rounded-2xl py-6 hidden md:block'
           labels={{ initial: 'How can I help you build and style your invoice?' }}
         />
       </div>
