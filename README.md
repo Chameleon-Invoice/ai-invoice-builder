@@ -53,6 +53,7 @@ The power of AI is realized when you break out of a chat box and showcase how it
 - Invoice tracking and reminders
 - Expense tracking and reporting
 - Voice integration
+- Additional Mastra features & integration when state sharing and workflow enforcement can be applied
 
 ## Getting Started
 
