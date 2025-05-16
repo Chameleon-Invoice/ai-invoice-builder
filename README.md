@@ -1,42 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chameleon Invoice Builder
+
+_Effortless, AI-powered invoicing for freelancers and small businesses._
+
+[![Mastra Build Hackathon Entry](https://img.shields.io/badge/Mastra-Hackathon-blue)](https://mastra.ai/hackathon)
+
+## Project Overview
+
+Most people get incredibly frustrated when creating invoices. Existing solutions are a struggle—cumbersome, slow, and anything but delightful. Chameleon Invoice Builder changes that: an AI-powered web app that makes invoicing effortless and intuitive, so you can focus on your business, not your paperwork.
+
+The power of AI is realized when you break out of a chat box and showcase how it impacts your productivity and business. This is the essence of Chameleon Invoice. Invoicing made simple. Done before you notice.
+
+## Demo
+
+**Live Demo:**  
+[https://chameleon-invoice-web.vercel.app/](https://chameleon-invoice-web.vercel.app/)
+
+**Video Presentation:**  
+[https://www.youtube.com/watch?v=Q3AWXcudeIo](https://www.youtube.com/watch?v=Q3AWXcudeIo)
+
+## Features
+
+- **AI-Driven Simplicity:** Generate invoices quickly with minimal input.
+- **Business Info Autofill:** Instantly pull business addresses from the web with a single URL.
+- **Seamless Email Delivery:** Send invoices directly to your clients (in progress).
+- **Smart Suggestions:** Auto-complete fields and learn from your usage patterns.
+- **Customizable Templates:** Create professional invoices you can personalize.
+- **Customer Management:** Save and reuse customer information.
+- **Real-time Preview:** Instantly see your invoice update as AI assists you with every change.
+
+## Technology Stack
+
+- **Frontend:** Next.js, TypeScript, Shadcn UI
+- **AI Integration:**
+  - **[Mastra](https://mastra.ai/):** AI agents, memory, workflows
+  - **Copilot Kit:** Advanced AI-driven UI/UX using AG-UI
+- **External Integrations:**
+  - **MCP (Model Context Protocol):** Connects to Exa (web search) and Resend (email delivery)
+- **Hosting:**
+  - **Vercel:** Web App Hosting
+  - **[Mastra Cloud](https://cloud.mastra.ai/):** Cloud Agent hosting
+
+## Upcoming Features
+
+- Business info autofill (Exa MCP)
+- Email delivery (Resend MCP)
+
+## Roadmap
+
+- CSV import/export
+- Download invoices as PDF, DOC
+- Payment processor integration (Stripe)
+- Invoice tracking and reminders
+- Expense tracking and reporting
+- Voice integration
 
 ## Getting Started
 
-First, install dependencies:
+### Prerequisites
 
-```bash
-pnpm install
-```
+- Node.js 18+
+- pnpm
 
-Then, run the development server:
+### Installation & Setup
 
-```bash
-pnpm run dev
-```
+1. **Clone the repository:**
 
-Then in a separate terminal session:
+   ```bash
+   git clone https://github.com/yourusername/chameleon-invoice.git
+   cd chameleon-invoice/ai-invoice-builder
+   ```
 
-```bash
-pnpm run mastra
-```
+2. **Install dependencies:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   pnpm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Run the development server:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   pnpm run dev
+   ```
 
-## Learn More
+4. **Start Mastra in a separate terminal:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   pnpm run mastra
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Open your browser:**
+   Go to [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
